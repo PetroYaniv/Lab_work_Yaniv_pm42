@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI Chatbot</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f2f2;
+}
+
+#chat{
+width:600px;
+margin:40px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.message{
+margin:10px 0;
+}
+
+.user{
+color:blue;
+}
+
+.bot{
+color:green;
+}
+
+input{
+width:80%;
+padding:10px;
+}
+
+button{
+padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="chat">
+
+<h2>AI Chat</h2>
+
+<div id="messages"></div>
+
+<input id="text" placeholder="Напиши повідомлення...">
+<button onclick="send()">Send</button>
+
+</div>
+
+<script>
+
+async function send(){
+
+let text=document.getElementById("text").value
+
+let messages=document.getElementById("messages")
+
+messages.innerHTML+=`<div class="message user">You: ${text}</div>`
+
+let response=await fetch("/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({message:text})
+})
+
+let data=await response.json()
+
+messages.innerHTML+=`<div class="message bot">Bot: ${data.answer}</div>`
+
+document.getElementById("text").value=""
+
+}
+
+</script>
+
+</body>
+</html>
